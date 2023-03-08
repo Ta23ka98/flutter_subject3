@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TodoPage extends StatefulWidget {
-  const TodoPage({Key? key}) : super(key: key);
+class TodoPage extends HookConsumerWidget {
+  TodoPage({Key? key}) : super(key: key);
 
-  @override
-  State<TodoPage> createState() => _TodoPageState();
-}
-
-class _TodoPageState extends State<TodoPage> {
   final List<int> _items = List<int>.generate(50, (int index) => index);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
     final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
@@ -27,13 +24,13 @@ class _TodoPageState extends State<TodoPage> {
             ),
         ],
         onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            final int item = _items.removeAt(oldIndex);
-            _items.insert(newIndex, item);
-          });
+          // setState(() {
+          //   if (oldIndex < newIndex) {
+          //     newIndex -= 1;
+          //   }
+          //   final int item = _items.removeAt(oldIndex);
+          //   _items.insert(newIndex, item);
+          // });
         },
       ),
     );
