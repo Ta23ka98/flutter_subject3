@@ -12,7 +12,17 @@ class TodoPage extends HookConsumerWidget {
     final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
     final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        //foregroundColor: Colors.white,
+        backgroundColor: Colors.green,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("ToDoリスト"),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          ],
+        ),
+      ),
       body: ReorderableListView(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         children: <Widget>[
