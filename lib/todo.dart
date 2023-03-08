@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 ///クラスの定義の仕方
-///①finalはなぜ必要？
-///②requiredは必要？
-///③({})と()だけの違い
+///finalはなぜ必要？：
+//requiredは必要？：どのみち引数を渡すので合った方がよい
+//({})と()だけの違い：()→引数を渡すときに、id: のようにでない。({})→出るのでオススメ
 @immutable
 class Todo {
   const Todo(

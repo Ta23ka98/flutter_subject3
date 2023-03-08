@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SampleTodo extends StatefulWidget {
-  ///コンストラクタの書き方
+  //コンストラクタの書き方：教材を参照
   const SampleTodo({Key? key}) : super(key: key);
 
   @override
