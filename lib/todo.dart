@@ -7,13 +7,18 @@ import 'package:flutter/foundation.dart';
 @immutable
 class Todo {
   const Todo(
-      {required this.id, required this.description, this.isCompleted = false});
-  final String id;
+      {required this.id, required this.description, required this.isCompleted});
+  final int id;
   final String description;
   final bool isCompleted;
 
-  @override
-  String toString() {
-    return "Todo(description: $description, isCompleted: $isCompleted)";
+  Todo copyWith(
+      {required int id,
+      required String description,
+      required bool isCompleted}) {
+    return Todo(
+        id: id ?? this.id,
+        description: description ?? this.description,
+        isCompleted: isCompleted ?? this.isCompleted);
   }
 }
