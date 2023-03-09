@@ -1,21 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_subject3/constants.dart';
 import 'package:flutter_subject3/todo.dart';
-import 'package:uuid/uuid.dart';
 
-const _uuid = Uuid();
+final todoListProvider = StateNotifierProvider<TodoListNotifier, List<Todo>>(
+    (ref) => TodoListNotifier());
 
-final todoListProvider = StateNotifierProvider((ref) => TodoList());
+class TodoListNotifier extends StateNotifier<List<Todo>> {
+  //ViewModelのコンストラクタがよく分からない：
+  //①左側の()と右側の()の違い
+  TodoListNotifier() : super(todoList);
 
-class TodoList extends StateNotifier<List<Todo>> {
-  ///ViewModelのコンストラクタがよく分からない
-  ///①左側の()と右側の()の違い
-  TodoList([List<Todo>? initialTodos]) : super(initialTodos ?? []);
-
-  void add(String description) {
-    state = [...state, Todo(id: _uuid.v4(), description: description)];
+  void add(Todo newTodo) {
+    final List<Todo> newState = [];
+    for (final todo in state) {
+      newState.add(todo);
+    }
+    newState.add(newTodo);
+    state = newState;
   }
 
-  void toggle(String id) {
+  void setText(String text) {
+    state = [];
+  }
+
+  void toggle(int id) {
     state = [
       for (final todo in state)
         if (todo.id == id)
@@ -46,4 +54,6 @@ class TodoList extends StateNotifier<List<Todo>> {
   void delete(Todo target) {
     state = state.where((todo) => todo.id != target.id).toList();
   }
+
+  void reOrder() {}
 }
