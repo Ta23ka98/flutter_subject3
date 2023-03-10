@@ -13,8 +13,6 @@ class TodoPage extends HookConsumerWidget {
     final state = ref.watch(todoListProvider);
     final notifier = ref.read(todoListProvider.notifier);
     final editModeState = ref.watch(editModeProvider);
-    final controller = TextEditingController(text: "");
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
@@ -45,19 +43,25 @@ class TodoPage extends HookConsumerWidget {
                             builder: (context) {
                               String description = "";
                               return AlertDialog(
-                                title: const Text("タスクを編集"),
+                                title: const Text("タスクを追加"),
                                 content: TextField(
+                                  decoration: const InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.green))),
                                   onChanged: (value) {
                                     description = value;
                                   },
-                                  //controller: controller,
                                 ),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("キャンセル")),
+                                      child: const Text(
+                                        "キャンセル",
+                                        style: TextStyle(color: Colors.green),
+                                      )),
                                   TextButton(
                                       onPressed: () {
                                         notifier.add(Todo(
@@ -67,7 +71,10 @@ class TodoPage extends HookConsumerWidget {
                                             isCompleted: false));
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("OK")),
+                                      child: const Text(
+                                        "OK",
+                                        style: TextStyle(color: Colors.green),
+                                      )),
                                 ],
                               );
                             });
@@ -85,36 +92,46 @@ class TodoPage extends HookConsumerWidget {
                   children: [
                     ListTile(
                       onTap: () {
-                        print("object");
                         showDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
-                                  title: const Text("タスクを編集"),
-                                  content: TextField(
-                                    onChanged: (value) {
-                                      String description;
-                                      description = value;
-                                    },
-                                    controller: controller,
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text("キャンセル")),
-                                    TextButton(
-                                        onPressed: () {
-                                          // notifier.add(
-                                          //     Todo(
-                                          //     id: DateTime.now().millisecondsSinceEpoch,
-                                          //     //description: description,
-                                          //     isCompleted: false)
-                                          // );
-                                        },
-                                        child: const Text("OK")),
-                                  ],
-                                ));
+                            builder: (context) {
+                              String description = "";
+                              return AlertDialog(
+                                title: const Text("タスクを追加"),
+                                content: TextField(
+                                  decoration: const InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.green))),
+                                  onChanged: (value) {
+                                    description = value;
+                                  },
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "キャンセル",
+                                        style: TextStyle(color: Colors.green),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        notifier.add(Todo(
+                                            id: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            description: description,
+                                            isCompleted: false));
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "OK",
+                                        style: TextStyle(color: Colors.green),
+                                      )),
+                                ],
+                              );
+                            });
                       },
                       leading: const Icon(Icons.add),
                       title: const Text("タスクを追加"),
@@ -127,9 +144,52 @@ class TodoPage extends HookConsumerWidget {
               key: Key("$index"),
               children: [
                 ListTile(
-                  onTap: () {
-                    notifier.toggle(state[index].id);
-                  },
+                  onTap: editModeState
+                      ? () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                String description = "";
+                                //String description = state[index].description;
+                                return AlertDialog(
+                                  title: const Text("タスクを編集"),
+                                  content: TextFormField(
+                                    initialValue: state[index].description,
+                                    decoration: const InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.green))),
+                                    onChanged: (value) {
+                                      description = value;
+                                    },
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "キャンセル",
+                                          style: TextStyle(color: Colors.green),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {
+                                          notifier.edit(
+                                              id: state[index].id,
+                                              description: description);
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "OK",
+                                          style: TextStyle(color: Colors.green),
+                                        )),
+                                  ],
+                                );
+                              });
+                        }
+                      : () {
+                          notifier.toggle(state[index].id);
+                        },
                   trailing: editModeState
                       ? IconButton(
                           onPressed: () {

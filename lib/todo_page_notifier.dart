@@ -37,7 +37,7 @@ class TodoListNotifier extends StateNotifier<List<Todo>> {
     ];
   }
 
-  void edit({required String id, required String description}) {
+  void edit({required int id, required String description}) {
     state = [
       for (final todo in state)
         if (todo.id == id)
