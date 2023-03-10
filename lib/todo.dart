@@ -12,13 +12,11 @@ class Todo {
   final String description;
   final bool isCompleted;
 
-  Todo copyWith(
-      {required int id,
-      required String description,
-      required bool isCompleted}) {
+  Todo copyWith({int? id, String? description, bool? isCompleted}) {
     return Todo(
-        id: id ?? this.id,
-        description: description ?? this.description,
-        isCompleted: isCompleted ?? this.isCompleted);
+      id: id ?? this.id,
+      description: description ?? this.description,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
   }
 }
